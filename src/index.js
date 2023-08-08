@@ -10,7 +10,7 @@ import { UserProvider } from './context/user_context'
 import { Auth0Provider } from '@auth0/auth0-react'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-//Wrap the Whole App using  the Product Provider....
+//Wrap the Whole App using  the Products Provider....
 //in the  app , we Have the Whole components
 root.render(
   <ProductsProvider>

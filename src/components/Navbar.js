@@ -13,6 +13,7 @@ import { Cart } from '../pages'
 
 // when in small  links hide  it(css)
 const Nav = () => {
+  const { openSidebar, closeSidebar } = useProductsContext()
   return (
     <NavContainer>
       <div className='nav-center'>
@@ -20,7 +21,7 @@ const Nav = () => {
           <Link to='/'>
             <img src={logo} alt='comfy sloth' />
           </Link>
-          <button type='button' className='nav-toggle'>
+          <button type='button' className='nav-toggle' onClick={openSidebar}>
             <FaBars />
           </button>
         </div>
@@ -40,10 +41,7 @@ const Nav = () => {
           </li>
         </ul>
 
-        <aside>
-        </aside>
-
-
+        <aside></aside>
 
         <CartButtons />
       </div>

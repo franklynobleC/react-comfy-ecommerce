@@ -49,8 +49,6 @@ export const ProductsProvider = ({ children }) => {
   )
 }
 
-
-
 // to  make  the Product context Available Globally, export  from  here, make  it Available here
 export const useProductsContext = () => {
   return useContext(ProductsContext)
