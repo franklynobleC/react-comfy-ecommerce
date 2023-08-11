@@ -14,10 +14,18 @@ import {
 } from '../actions'
 
 const initialState = {
-  isSidebarOpen: false
+  isSidebarOpen: false,
+  product_loading: false,
+  products_error: false,
+  products: [],
+  featured_products: [],
+  single_product_error: false,
+  single_product_loading: false,
+  single_product: {}
 }
 
 //   declare global context  and  make it Available Globally
+//also  here  Set All  the action and  using Dispatch
 const ProductsContext = React.createContext()
 
 export const ProductsProvider = ({ children }) => {
@@ -31,11 +39,31 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSE })
   }
 
+  //fetch data from API  using Axios
   const fetchProducts = async url => {
     try {
+      dispatch({ type: GET_PRODUCTS_BEGIN })
+
       const response = await axios.get(url)
+      const products = response.data
+      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products })
       console.log(response)
-    } catch (err) {}
+    } catch (error) {
+      dispatch({ type: GET_PRODUCTS_ERROR })
+    }
+  }
+
+  const fetchSingleProduct = async url => {
+    dispatch({ type: GET_SINGLE_PRODUCT_BEGIN })
+
+    try {
+      const response = await axios.get(url)
+
+      const singleProduct = response.data
+      dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct })
+    } catch (error) {
+      dispatch({ type: GET_SINGLE_PRODUCT_ERROR })
+    }
   }
 
   useEffect(() => {
