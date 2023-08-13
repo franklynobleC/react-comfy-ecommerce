@@ -1,8 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-const ProductImages = () => {
-  return <h4>product images</h4>
+//use es6:  if  the Images object is, undefined,  set it  to Empty
+//if  it is defined  in  the img tag, go fetch it
+const ProductImages = ({ images = [{ url: '' }] }) => {
+  const [main, setMain] = useState(images[0])
+  console.log(main)
+  return (
+    <Wrapper>
+      <img src={main.url} alt='main  image' className='main' />
+      <div className='gallery'>
+        {images.map((image, index) => {
+          return <img src={image.url} alt='' />
+        })}
+      </div>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.section`
