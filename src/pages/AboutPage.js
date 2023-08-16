@@ -26,6 +26,17 @@ const AboutPage = () => {
             exercitationem. Aliquid quaerat harum empora suscipit? Quo eum cum
             laborum architecto itaque facilis iste praesentium reprehenderit
             ullam!
+
+
+
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit cum reiciendis
+            alias
+            veritatis ad autem quam tempore odio distinctio voluptatibus rem soluta illo
+            possimus quos a, aperiam accusamus obcaecati neque.
+
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+            Repudiandae corrupti quisquam consequuntur pariatur unde eaque. Eligendi autem,
+            aliquam necessitatibus eveniet consectetur inventore sunt amet quod, soluta reprehenderit, quas labore voluptas?
           </p>
         </article>
       </Wrapper>

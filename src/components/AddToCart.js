@@ -9,6 +9,33 @@ const AddToCart = ({ product }) => {
   const { id, stock, colors } = product
 
   const [mainColor, SetMainColor] = useState(colors[0])
+  const [amount, setAmount] = useState(1)
+
+  const increase = oldAmount => {
+    setAmount(oldAmount => {
+      let tempAmount = oldAmount + 1
+
+      if (tempAmount > stock) {
+        tempAmount = stock
+      }
+
+      return tempAmount
+    })
+  }
+
+  //if  the temporary amount is greater than what is  in stock set  it is Available in stock
+
+  const decrease = oldAmount => {
+    setAmount(oldAmount => {
+      let tempAmount = oldAmount - 1
+      //if  the temporary amount is less than 1  in stock set  it is Available in stock
+      if (tempAmount < 1) {
+        tempAmount = 1
+      }
+
+      return tempAmount
+    })
+  }
 
   return (
     <Wrapper>
@@ -17,9 +44,32 @@ const AddToCart = ({ product }) => {
 
         <div>
           {colors.map((color, index) => {
-            return <button key={index}>{index}</button>
+            return (
+              <button
+                key={index}
+                style={{ background: color }}
+                className={`${
+                  mainColor === color ? 'color-btn active' : 'color-btn'
+                }`}
+                onClick={() => SetMainColor(color)}
+              >
+                {mainColor === color ? <FaCheck /> : null}
+              </button>
+            )
           })}
         </div>
+      </div>
+
+      <div className='btn-container'>
+        <AmountButtons
+          amount={amount}
+          increase={increase}
+          decrease={decrease}
+        />
+
+        <Link to='/cart' className='btn'>
+          add to cart
+        </Link>
       </div>
     </Wrapper>
   )

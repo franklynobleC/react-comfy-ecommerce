@@ -14,6 +14,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 //in the  app , we Have the Whole components
 root.render(
   <ProductsProvider>
-    <App />
+    <FilterProvider>
+      <App />
+    </FilterProvider>
   </ProductsProvider>
 )
