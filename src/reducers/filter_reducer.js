@@ -67,11 +67,48 @@ const filter_reducer = (state, action) => {
   }
 
   if (action.type === FILTER_PRODUCTS) {
-    console.log('filtering Products')
+    //create new set of data and pass  it to  the array we are getting back
+    const { all_products } = state // destructure from  the state
+    console.log('from  filters', state.filters)
+    const { text, category, company, color, price, shipping } = state.filters
 
-    return { ...state }
+    let tempProducts = [...all_products]
+    //filtering
+    //filter text, (products name  in category)
+    if (text) {
+      tempProducts = tempProducts.filter(product => {
+        return product.name.toLowerCase().startsWith(text)
+      })
+    }
+
+    //category
+    if (category !== 'all') {
+      tempProducts = tempProducts.filter(product => {
+        return product.category === category
+      })
+    }
+
+    return { ...state, filtered_products: tempProducts }
+  }
+
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: '',
+        company: 'all',
+        category: 'all',
+        color: 'all',
+
+        max_price: state.filters.max_price,
+
+        shipping: false
+      }
+    }
   }
 
   throw new Error(`No Matching "${action.type}" - action type`)
 }
+
 export default filter_reducer
