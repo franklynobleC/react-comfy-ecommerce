@@ -9,6 +9,7 @@ import {
   CLEAR_FILTERS
 } from '../actions'
 
+// All the  action Dispatch from  the filter Context
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
     let maxPrice = action.payload.map(p => p.price)
@@ -85,6 +86,31 @@ const filter_reducer = (state, action) => {
     if (category !== 'all') {
       tempProducts = tempProducts.filter(product => {
         return product.category === category
+      })
+    }
+
+    //company
+
+    if (company !== 'all') {
+      tempProducts = tempProducts.filter(product => {
+        return product.company === company
+      })
+    }
+
+    //filters  for colors, color has array of  arrays
+    if (color !== 'all') {
+      tempProducts = tempProducts.filter(product => {
+        return product.colors.find(c => c === color)
+      })
+    }
+
+    //price  filter, less  or equal to  the current  price, using  implicit return
+    tempProducts = tempProducts.filter(product => product.price <= price)
+
+    //shipping,if  the condition is  met, return  it
+    if (shipping) {
+      tempProducts = tempProducts.filter(product => {
+        return product.shipping === true
       })
     }
 
