@@ -5,7 +5,134 @@ import { getUniqueValues, formatPrice } from '../utils/helpers'
 import { FaCheck } from 'react-icons/fa'
 
 const Filters = () => {
-  return <h4>filters</h4>
+  const {
+    filters: {
+      text,
+      category,
+      company,
+      color,
+      min_price,
+      price,
+      max_price,
+      shipping
+    },
+    updateFilters,
+    clearFilters,
+    all_products
+  } = useFilterContext()
+
+  //pass  the Array type of  Object, returns  the array
+  const categories = getUniqueValues(all_products, 'category')
+  const companies = getUniqueValues(all_products, 'company')
+  const colors = getUniqueValues(all_products, 'colors')
+
+  return (
+    <Wrapper>
+      <div className='content'>
+        <form onSubmit={e => e.preventDefault()}>
+          {/*  search input    */}
+          <div className='form-control'>
+            <input
+              type='text'
+              name='text'
+              placeholder='search'
+              clearFilters='search-input'
+              value={text}
+              onChange={updateFilters}
+            />
+          </div>
+          {/*  end search input    */}
+          {/*  categories   */}
+
+          <div className='form-control'>
+            <h4>Category</h4>
+            <div>
+              {categories.map((c, index) => {
+                return (
+                  <button
+                    key={index}
+                    type='button'
+                    onClick={updateFilters}
+                    name='category'
+                    className={`${
+                      category === c.toLowerCase() ? 'active' : null
+                    }`}
+                  >
+                    {c}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          {/* end of  categories */}
+          {/* companies */}
+          <div className='form-control'>
+            <h5>company</h5>
+            {/*access the company from the name value, get the name from the */}
+            reducer
+            <select
+              name='company'
+              value={company}
+              onChange={updateFilters}
+              className='company'
+            >
+              {companies.map((c, index) => {
+                return (
+                  <option key={index} value={c}>
+                    {c}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          {/*  end  of  companies*/}
+          <div className='form-control'>
+            <h5>colors</h5>
+            <div className='colors'>
+              {colors.map((c, index) => {
+                if (c === 'all') {
+                  return (
+                    <button
+                      name='color'
+                      onClick={updateFilters}
+                      data-color='all'
+                      className={`${
+                        color === 'all' ? 'all-btn active' : 'all-btn'
+                      }`}
+                      key={index}
+                    >
+                      {' '}
+                      all{' '}
+                    </button>
+                  )
+                }
+
+                {
+                  /* the  name needs  to match the state value name=color*/
+                  /* data-color is  the  button data attribute, get  the value from filter context as  the name, not  value; value name=color*/
+                }
+                return (
+                  <button
+                    key={index}
+                    name='color'
+                    style={{ background: c }}
+                    className={`${
+                      color === c ? 'color-btn active' : 'color-btn'
+                    }`}
+                    data-color={c}
+                    onClick={updateFilters}
+                  >
+                    {color === c ? <FaCheck /> : null}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          {/* colors*/}
+        </form>
+      </div>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.section`

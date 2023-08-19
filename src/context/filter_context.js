@@ -18,7 +18,17 @@ const initialState = {
   filtered_products: [],
   all_products: [],
   grid_view: true,
-  sort: 'price-lowest'
+  sort: 'price-lowest',
+  filters: {
+    text: '',
+    company: 'all',
+    category: 'all',
+    color: 'all',
+    min_price: 0,
+    max_price: 0,
+    price: 0,
+    shipping: false
+  }
 }
 
 //create filter context
@@ -33,11 +43,12 @@ export const FilterProvider = ({ children }) => {
     dispatch({ type: LOAD_PRODUCTS, payload: products })
   }, [products])
 
-  //useEffect to control sort
+  //useEffect to control sort, filters in  the state, and products
   useEffect(() => {
-  dispatch({type:SORT_PRODUCTS})
+    dispatch({ type: FILTER_PRODUCTS })
 
-  }, [products, state.sort])
+    dispatch({ type: SORT_PRODUCTS })
+  }, [products, state.sort, state.filters])
 
   //show products  in  grid layout,
   //dispatch  the action  to  the reducer
@@ -60,12 +71,36 @@ export const FilterProvider = ({ children }) => {
     const value = e.target.value
     // console.log(value)
 
-    dispatch({ type: UPDATE_SORT, payload: value })
+    dispatch({ type: UPDATE_SORT, payload: { value } })
   }
+
+  const updateFilters = e => {
+    let name = e.target.name
+    let value = e.target.value
+    if (name === 'category') {
+      //get  the Text That's inside a  button
+      value = e.target.textContext
+    }
+
+    if (name === 'color') {
+      //get the data attribute of  the button
+      value = e.target.dataset.color
+    }
+    dispatch({ type: UPDATE_FILTERS, payload: { name, value } })
+  }
+
+  const clearFilters = () => {}
 
   return (
     <FilterContext.Provider
-      value={{ ...state, setGridView, setListView, updateSort }}
+      value={{
+        ...state,
+        setGridView,
+        setListView,
+        updateSort,
+        updateFilters,
+        clearFilters
+      }}
     >
       {children}
     </FilterContext.Provider>

@@ -11,10 +11,14 @@ import {
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
+    let maxPrice = action.payload.map(p => p.price)
+    maxPrice = Math.max(...maxPrice)
+
     return {
       ...state,
       all_products: [...action.payload],
-      filtered_products: [...action.payload]
+      filtered_products: [...action.payload],
+      filters: { ...state.filters, max_price: maxPrice, price: maxPrice }
     }
   }
 
@@ -37,7 +41,7 @@ const filter_reducer = (state, action) => {
       tempProducts = tempProducts.sort((a, b) => a.price - b.price)
     }
     if (sort === 'price-highest') {
-      console.log(state)
+      // console.log(state)
       tempProducts = tempProducts.sort((a, b) => b.price - a.price)
     }
     if (sort === 'name-a') {
@@ -46,15 +50,27 @@ const filter_reducer = (state, action) => {
       })
     }
 
-      if (sort === 'name-z') {
-        tempProducts = tempProducts.sort((a, b) => {
-          return b.name.localeCompare(a.name)
-        })
-      }
-
-      return { ...state, filtered_products: tempProducts }
+    if (sort === 'name-z') {
+      tempProducts = tempProducts.sort((a, b) => {
+        return b.name.localeCompare(a.name)
+      })
     }
 
+    return { ...state, filtered_products: tempProducts }
+  }
+
+  if (action.type === UPDATE_FILTERS) {
+    //destructure and  from payload, name and value
+    const { name, value } = action.payload
+    //here passing  the value dynamically,  set the name  to  the value in  thefilters Object
+    return { ...state, filters: { ...state.filters, [name]: value } }
+  }
+
+  if (action.type === FILTER_PRODUCTS) {
+    console.log('filtering Products')
+
+    return { ...state }
+  }
 
   throw new Error(`No Matching "${action.type}" - action type`)
 }
