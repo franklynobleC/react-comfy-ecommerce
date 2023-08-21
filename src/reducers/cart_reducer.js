@@ -10,7 +10,24 @@ const cart_reducer = (state, action) => {
   if (action.type === ADD_TO_CART) {
     const { id, color, amount, product } = action.payload
     const tempItem = state.cart.find(i => i.id === id + color)
+    //check if  the  item is  in  the Cart, if  yes
     if (tempItem) {
+      //check if  the  item is  in the Cart,  iterate and check  where the Item is
+      const tempCart = state.cart.map(cartItem => {
+        //if the  cartItem  is  equal  id  + color, we  know  that  it's  the current  item, and  just Increase  the Amount
+        //else  just  return  the cartItem
+        if (cartItem.id === id + color) {
+          //the current amount plus the amount   passed  in
+          let newAmount = cartItem.amount + amount
+          if (newAmount > cartItem.max) {
+            newAmount = cartItem.max
+          }
+          return { ...cartItem, amount: newAmount }
+        } else {
+          return cartItem
+        }
+      })
+      return { ...state, cart: tempCart }
     } else {
       const newItem = {
         id: id + color,
