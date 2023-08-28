@@ -12,12 +12,27 @@ import { Auth0Provider } from '@auth0/auth0-react'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 //Wrap the Whole App using  the Products Provider....
 //in the  app , we Have the Whole components
+//dev - xacylw1gno1sqc61.us.auth0.com
+
+//UXwDo4BoY2Qhq7HeaVHDedtmMzYKFLEM
+
 root.render(
-  <ProductsProvider>
-    <FilterProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </FilterProvider>
-  </ProductsProvider>
+  <Auth0Provider
+    domain='dev-xacylw1gno1sqc61.us.auth0.com'
+    clientId='UXwDo4BoY2Qhq7HeaVHDedtmMzYKFLEM'
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+    cacheLocation='localstorage'
+  >
+   <UserProvider>
+      <ProductsProvider>
+        <FilterProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </FilterProvider>
+      </ProductsProvider>
+    </UserProvider>
+  </Auth0Provider>
 )
