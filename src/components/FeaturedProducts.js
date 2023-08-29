@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Error from './Error'
 import Loading from './Loading'
 import Product from './Product'
+// import { links } from '../utils/constants'
 
 const FeaturedProducts = () => {
   const {
@@ -33,6 +34,10 @@ const FeaturedProducts = () => {
           return <Product key={product.id} {...product} />
         })}
       </div>
+
+      <Link className='btn' to='/products'>
+        all products
+      </Link>
     </Wrapper>
   )
 }

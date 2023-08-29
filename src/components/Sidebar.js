@@ -13,6 +13,7 @@ const Sidebar = () => {
   //Destructure and use the data from useProductsProvider
 
   const { isSidebarOpen, closeSidebar } = useProductsContext()
+  const {myUser} = useUserContext()
 
   return (
     <SidebarContainer>
@@ -38,13 +39,14 @@ const Sidebar = () => {
               </li>
             )
           })}
-
-          <li>
+          {myUser &&
+            <li>
             <Link to='/checkout' onClick={closeSidebar}>
-              {' '}
-              checkout
+
+            checkout
             </Link>
-          </li>
+            </li>
+          }
         </ul>
         <CartButtons />
       </aside>
