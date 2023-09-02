@@ -5,7 +5,7 @@ import {
   CardElement,
   useStripe,
   Elements,
-  useElements,
+  useElements
 } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { useCartContext } from '../context/cart_context'
@@ -13,14 +13,107 @@ import { useUserContext } from '../context/user_context'
 import { formatPrice } from '../utils/helpers'
 import { useHistory } from 'react-router-dom'
 
+const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+
 const CheckoutForm = () => {
-  return <h4>hello from Stripe Checkout </h4>
+  //local variables   from  global state
+  const { cart, total_amount, shipping_fee, clearCart } = useCartContext()
+  const { myUser } = useUserContext()
+  const history = useHistory()
+
+  //STRIPE STUFF (stripe state variable)
+  const [succeeded, setSucceeded] = useState(false)
+  const [error, setError] = useState(null)
+  const [disable, setDisable] = useState(true)
+  const [processing, setProcessing] = useState('')
+  const [clientSecret, setClientSecret] = useState('')
+  const stripe = useStripe()
+  const elements = useElements()
+
+  const cardStyle = {
+    style: {
+      base: {
+        color: '#32325d',
+        fontFamily: 'Arial, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#32325d'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    }
+  }
+
+
+  const createPaymentIntent = async () => {
+    //sending post to  the server, if all works data should show
+    try {
+      const { data } = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      )
+
+      console.log(data.clientSecret)
+      setClientSecret(data.clientSecret)
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  useEffect(() => {
+    createPaymentIntent()
+    //eslint-disable next-line
+  }, [])
+
+  const handleChange = async event => {}
+
+  const handleSubmit = async event => {}
+
+  return (
+    <div>
+      <form id='payment-form' onSubmit={handleSubmit}>
+        <CardElement
+          id='card-element'
+          options={cardStyle}
+          onChange={handleChange}
+        />
+
+        <button disabled={processing || disable || succeeded} id='submit'>
+          <span id='button-text'>
+            {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
+          </span>
+        </button>
+
+        {/*Show any Error that happens   when processing the Payment */}
+        {error && (
+          <div class='card-error' role='alert'>
+            {error}
+          </div>
+        )}
+        {/*   Show a success  message  upon  completion */}
+
+        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+          PaymentSucceed, see the result in you
+          <a href={`https://dashboard.stripe.com/test/payments`}>
+            stripe dashboard.
+          </a>
+          Refresh the page to Again
+        </p>
+      </form>
+    </div>
+  )
 }
 
 const StripeCheckout = () => {
   return (
     <Wrapper>
-      <CheckoutForm />
+      <Elements stripe={promise}>
+        <CheckoutForm />
+      </Elements>
     </Wrapper>
   )
 }
