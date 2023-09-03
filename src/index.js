@@ -12,10 +12,8 @@ import { Auth0Provider } from '@auth0/auth0-react'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 //Wrap the Whole App using  the Products Provider....
 //in the  app , we Have the Whole components
-//dev - xacylw1gno1sqc61.us.auth0.com
 
-//UXwDo4BoY2Qhq7HeaVHDedtmMzYKFLEM
-
+//load the secret from   .env
 root.render(
   <Auth0Provider
     domain={process.env.REACT_APP_AUTH_DOMAIN}
