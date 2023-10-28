@@ -13,7 +13,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 //Wrap the Whole App using  the Products Provider....
 //in the  app , we Have the Whole components
 
-//load the secret from   .env
+ TODO:
+//  Deploy to netlify
+ //load the secret from   .env
 root.render(
   <Auth0Provider
     domain={process.env.REACT_APP_AUTH_DOMAIN}

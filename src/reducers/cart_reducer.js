@@ -95,7 +95,6 @@ const cart_reducer = (state, action) => {
         total.total_amount += price * amount
         return total
 
-
       },
       { total_items: 0, total_amount: 0 }
     )
